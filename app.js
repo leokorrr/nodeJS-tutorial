@@ -1,18 +1,17 @@
-var http = require('http');
-var fs = require('fs');
+var express = require('express');
 
-var readStream = fs.createReadStream(__dirname + '/lessons/read-this.txt');
-var writeStream = fs.createWriteStream(__dirname + '/lessons/write-here.txt');
+var app = express();
 
-readStream.pipe(writeStream);
+app.listen(3000);
 
-var server = http.createServer(function(req,res){
-  res.writeHead(200, {'Content-type': 'text/plain'});
-
-  var readStream = fs.createReadStream(__dirname + '/lessons/read-this.txt');
-  readStream.pipe(res);
-
+app.get('/', function(req, res){
+  res.sendFile(__dirname + '/index.html')
 });
 
-server.listen(3000, '127.0.0.1');
-console.log('now listening to port 3000');
+app.get('/contact', function(req, res){
+  res.sendFile(__dirname + '/contact.html');
+});
+
+app.get('/profile/:id', function(req,res){
+  res.send(' U r requested to c a profile with the id of ' + req.params.id);
+});
